@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Агентство недвижимости — Главная</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+  <style>
+    .error-message { color: red; font-size: 12px; margin-top: 4px; }
+    .success-message { background: #d4edda; color: #155724; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c3e6cb; }
+    input, textarea { display: block; width: 100%; margin-bottom: 8px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+    button { padding: 8px 16px; border-radius: 4px; background: #007bff; color: white; border: none; cursor: pointer; }
+    button:hover { background: #0056b3; }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav>
+      <div class="brand">
+        <div class="logo">АН</div>
+        <div>
+          <div>Агентство &quot;КомфортDom&quot;</div>
+          <div style="font-size:12px;color:var(--muted)">Надёжно. Быстро. Для вас.</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#listings">Объекты</a>
+        <a href="#services">Услуги</a>
+        <a href="#about">О нас</a>
+        <a class="cta" href="#contact">Связаться</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <div th:if="${param.success != null and param.success.size() > 0}" class="success-message">
+    <span th:if="${param.success[0] == 'contact'}">✅ Контактная форма успешно отправлена!</span>
+    <span th:if="${param.success[0] == 'property'}">✅ Объект недвижимости успешно добавлен!</span>
+  </div>
+
+  <section id="contact" class="section split">
+    <div class="about">
+      <h3>О нас</h3>
+      <p class="muted">Агентство &quot;КомфортDom&quot; работает с 2014 года. Наша команда — агенты с опытом, юристы и оценщики.</p>
+    </div>
+
+    <aside style="background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(13,17,23,0.04)">
+      <h3>Связаться</h3>
+      <form th:action="@{/contact}" th:object="${contactForm}" method="post">
+        <input type="text" th:field="*{name}" placeholder="Имя"/>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></div>
+
+        <input type="email" th:field="*{email}" placeholder="Email"/>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></div>
+
+        <input type="text" th:field="*{phone}" placeholder="Телефон"/>
+        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></div>
+
+        <textarea th:field="*{message}" rows="4" placeholder="Сообщение"></textarea>
+        <div th:if="${#fields.hasErrors('message')}" th:errors="*{message}" class="error-message"></div>
+
+        <button type="submit">Отправить заявку</button>
+      </form>
+    </aside>
+  </section>
+
+
+  <section id="add-property" class="section">
+    <h2>Добавить объект недвижимости</h2>
+    <form th:action="@{/property}" th:object="${propertyForm}" method="post">
+      <input type="text" th:field="*{title}" placeholder="Название объекта"/>
+      <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
+
+      <input type="text" th:field="*{address}" placeholder="Адрес"/>
+      <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error-message"></div>
+
+      <input type="text" th:field="*{price}" placeholder="Цена"/>
+      <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="error-message"></div>
+
+      <input type="email" th:field="*{ownerEmail}" placeholder="Email владельца"/>
+      <div th:if="${#fields.hasErrors('ownerEmail')}" th:errors="*{ownerEmail}" class="error-message"></div>
+
+      <button type="submit">Добавить</button>
+    </form>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    © 2014—2025 Агентство "КомфортDom". Все права защищены.
+  </div>
+</footer>
+</body>
+</html>
